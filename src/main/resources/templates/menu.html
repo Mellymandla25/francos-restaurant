@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta charset="UTF-8">
+    <title>Franco's Portuguese Restaurant Menu</title>
+    
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #d90000 50%, #00994d 50%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .content-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            min-height: 95vh;
+        }
+
+        header {
+            background: #000;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid #ff6600;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #ff6600;
+            margin: 0;
+            font-size: 40px;
+        }
+
+        .nav-links {
+            margin-top: 15px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #ff6600;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 5px 15px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #333;
+            text-decoration: underline;
+        }
+
+        .cart-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff6600;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            z-index: 100;
+            border: 2px solid white;
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.6);
+        }
+
+        .cart-indicator a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .menu-section {
+            padding: 20px 0;
+        }
+
+        .menu-section h2 {
+            color: #ff6600;
+            border-bottom: 2px solid #ff6600;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-card {
+            background: #222;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        .menu-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
+        }
+
+        .menu-card h3 {
+            margin-top: 0;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .menu-card p {
+            color: #ccc;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .price {
+            color: #ff6600;
+            font-size: 24px;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        form {
+            margin-top: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #ff6600;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #e65c00;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cart-indicator">
+        <a href="/cart">🛒 Cart (<span th:text="${cartCount}">0</span>)</a>
+    </div>
+
+    <div class="content-wrapper">
+        <header>
+            <h1>Franco's Portuguese Restaurant Menu</h1>
+            <p style="color:#ccc;">"Good food takes time"</p>
+            
+            <div class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/menu">📋 Menu</a>
+                <a href="/specials">🔥 Specials</a>
+                <a href="/cart">🛒 Cart</a>
+                <a href="/orders">📦 Orders</a>
+            </div>
+        </header>
+
+        <!-- ==================== STARTERS ==================== -->
+        <section class="menu-section">
+            <h2>Starters</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Smalls (Steak Cubes)</h3>
+                    <p>Steak cubes in a creamy garlic sauce, served with Portuguese roll</p>
+                    <span class="price">R 60.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Smalls (Steak Cubes)" />
+                        <input type="hidden" name="itemPrice" value="60.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Chicken Livers</h3>
+                    <p>Traditional chicken livers cooked with onion, garlic, cream, served with Portuguese roll</p>
+                    <span class="price">R 60.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Chicken Livers" />
+                        <input type="hidden" name="itemPrice" value="60.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Giblets</h3>
+                    <p>Chicken giblets cooked in our famous peri-peri sauce, served with Portuguese roll</p>
+                    <span class="price">R 60.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Giblets" />
+                        <input type="hidden" name="itemPrice" value="60.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Chicken Wings</h3>
+                    <p>Spicy chicken wings glazed in our famous secret sauce</p>
+                    <span class="price">R 70.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Chicken Wings" />
+                        <input type="hidden" name="itemPrice" value="70.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Calamari</h3>
+                    <p>Sliced Calamari tubes, served with Portuguese roll</p>
+                    <span class="price">R 100.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Calamari" />
+                        <input type="hidden" name="itemPrice" value="100.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Trinchado (Beef)</h3>
+                    <p>Beef cubes cooked in a rich garlic, peri-peri sauce, served with Portuguese roll</p>
+                    <span class="price">R 80.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Trinchado (Beef)" />
+                        <input type="hidden" name="itemPrice" value="80.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Trinchado (Chicken)</h3>
+                    <p>Chicken cubes cooked in a rich garlic, peri-peri sauce, served with Portuguese roll</p>
+                    <span class="price">R 60.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Trinchado (Chicken)" />
+                        <input type="hidden" name="itemPrice" value="60.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Trinchado (Fillet)</h3>
+                    <p>Fillet cubes cooked in a rich garlic, peri-peri sauce, served with Portuguese roll</p>
+                    <span class="price">R 120.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Trinchado (Fillet)" />
+                        <input type="hidden" name="itemPrice" value="120.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Chouriço</h3>
+                    <p>Portuguese sausage grilled, served with Portuguese roll</p>
+                    <span class="price">R 100.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Chouriço" />
+                        <input type="hidden" name="itemPrice" value="100.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Mussels</h3>
+                    <p>Fresh mussels cooked in a creamy garlic sauce, served with Portuguese roll</p>
+                    <span class="price">R 80.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Mussels" />
+                        <input type="hidden" name="itemPrice" value="80.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Rissóis (Portuguese Beef)</h3>
+                    <p>Traditional beef turnovers</p>
+                    <span class="price">R 20.00 (each)</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Rissóis (Portuguese Beef)" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Rissóis (Shrimp)</h3>
+                    <p>Traditional shrimp turnovers</p>
+                    <span class="price">R 20.00 (each)</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Rissóis (Shrimp)" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Rissóis (Chicken)</h3>
+                    <p>Traditional chicken turnovers</p>
+                    <span class="price">R 20.00 (each)</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Rissóis (Chicken)" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Prawns</h3>
+                    <p>5 Prawns in garlic sauce, served with Portuguese roll</p>
+                    <span class="price">R 120.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Prawns" />
+                        <input type="hidden" name="itemPrice" value="120.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+
+                <div class="menu-card">
+                    <h3>Soup of the Day</h3>
+                    <p>Served with Portuguese roll</p>
+                    <span class="price">R 50.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Soup of the Day" />
+                        <input type="hidden" name="itemPrice" value="50.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PREGO ROLLS ==================== -->
+        <section class="menu-section">
+            <h2>Prego Rolls</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Chicken Prego</h3>
+                    <p>Chicken breast cooked in our famous garlic sauce, served with Portuguese roll</p>
+                    <span class="price">R 50.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Chicken Prego" />
+                        <input type="hidden" name="itemPrice" value="50.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Beef Prego</h3>
+                    <p>Beef steak cooked in our famous garlic sauce, served with Portuguese roll</p>
+                    <span class="price">R 70.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Beef Prego" />
+                        <input type="hidden" name="itemPrice" value="70.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Franco's Special Prego</h3>
+                    <p>Chicken & beef cubes, topped with egg, ham & cheese</p>
+                    <span class="price">R 100.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Franco's Special Prego" />
+                        <input type="hidden" name="itemPrice" value="100.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== BURGERS ==================== -->
+        <section class="menu-section">
+            <h2>Burgers</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Chicken Burger</h3>
+                    <p>Chicken breast with lettuce, tomato, onion, cheese, served with chips</p>
+                    <span class="price">R 60.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Chicken Burger" />
+                        <input type="hidden" name="itemPrice" value="60.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Beef Burger</h3>
+                    <p>Homemade pork & beef patty with lettuce, tomato, onion, cheese, served with chips</p>
+                    <span class="price">R 70.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Beef Burger" />
+                        <input type="hidden" name="itemPrice" value="70.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Ham (Extra)</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Ham (Extra)" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Cheese (Extra)</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Cheese (Extra)" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Egg (Extra)</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Egg (Extra)" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ESPETADAS ==================== -->
+        <section class="menu-section">
+            <h2>Espetadas</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Beef (300g Rump)</h3>
+                    <p>Marinated with barbeque & olive oil, served with choice of side</p>
+                    <span class="price">R 150.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Beef (300g Rump)" />
+                        <input type="hidden" name="itemPrice" value="150.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Beef (Fillet)</h3>
+                    <p>Marinated with barbeque & olive oil, served with choice of side</p>
+                    <span class="price">R 200.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Beef (Fillet)" />
+                        <input type="hidden" name="itemPrice" value="200.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Chicken (Full Breast)</h3>
+                    <p>Chicken breasts, marinated in Franco's secret sauce</p>
+                    <span class="price">R 130.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Chicken (Full Breast)" />
+                        <input type="hidden" name="itemPrice" value="130.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Pork</h3>
+                    <p>Pork meat, marinated in Franco's secret sauce</p>
+                    <span class="price">R 130.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Pork" />
+                        <input type="hidden" name="itemPrice" value="130.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== RIBS ==================== -->
+        <section class="menu-section">
+            <h2>Ribs</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>400g Ribs</h3>
+                    <p>Served with choice of side</p>
+                    <span class="price">R 200.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="400g Ribs" />
+                        <input type="hidden" name="itemPrice" value="200.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>800g Ribs</h3>
+                    <p>Served with choice of side</p>
+                    <span class="price">R 350.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="800g Ribs" />
+                        <input type="hidden" name="itemPrice" value="350.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>500g Cocktail Ribs</h3>
+                    <p>Served with choice of side</p>
+                    <span class="price">R 150.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="500g Cocktail Ribs" />
+                        <input type="hidden" name="itemPrice" value="150.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== COMBOS ==================== -->
+        <section class="menu-section">
+            <h2>Combos</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Half Chicken & 5 Prawns</h3>
+                    <p>Served with your choice of side</p>
+                    <span class="price">R 220.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Half Chicken & 5 Prawns" />
+                        <input type="hidden" name="itemPrice" value="220.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>250g Rump & 5 Prawns</h3>
+                    <p>Served with your choice of side</p>
+                    <span class="price">R 250.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="250g Rump & 5 Prawns" />
+                        <input type="hidden" name="itemPrice" value="250.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Half Chicken & Grilled Starter Calamari</h3>
+                    <p>Served with your choice of side</p>
+                    <span class="price">R 200.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Half Chicken & Grilled Starter Calamari" />
+                        <input type="hidden" name="itemPrice" value="200.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Mix Espetada Beef & Chicken</h3>
+                    <p>Served with your choice of side</p>
+                    <span class="price">R 130.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Mix Espetada Beef & Chicken" />
+                        <input type="hidden" name="itemPrice" value="130.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Hake & 5 Prawns</h3>
+                    <p>Served with your choice of side</p>
+                    <span class="price">R 200.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Hake & 5 Prawns" />
+                        <input type="hidden" name="itemPrice" value="200.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>400g Ribs & Half Chicken</h3>
+                    <p>Served with your choice of side</p>
+                    <span class="price">R 280.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="400g Ribs & Half Chicken" />
+                        <input type="hidden" name="itemPrice" value="280.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SIDES ==================== -->
+        <section class="menu-section">
+            <h2>Sides</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Portuguese Salad</h3>
+                    <p>Lettuce, tomato, onion, cucumber & vinaigrette</p>
+                    <span class="price">R 40.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Portuguese Salad" />
+                        <input type="hidden" name="itemPrice" value="40.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Egg (Any Style)</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Egg (Any Style)" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Savoury White Rice</h3>
+                    <span class="price">R 20.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Savoury White Rice" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Mash Potato</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Mash Potato" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Millo Frito (Fried Rice)</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Millo Frito (Fried Rice)" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Spaghetti</h3>
+                    <span class="price">R 20.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Spaghetti" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Macaroni</h3>
+                    <span class="price">R 20.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Macaroni" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Veg of the Day</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Veg of the Day" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Boiled Potato</h3>
+                    <span class="price">R 20.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Boiled Potato" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Portuguese Roll with Butter</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Portuguese Roll with Butter" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== WINE ==================== -->
+        <section class="menu-section">
+            <h2>Wine</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Gallo White</h3>
+                    <span class="price">R 60.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Gallo White" />
+                        <input type="hidden" name="itemPrice" value="60.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Monte Velho Red</h3>
+                    <span class="price">R 60.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Monte Velho Red" />
+                        <input type="hidden" name="itemPrice" value="60.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>4 Cousins Sweet Red</h3>
+                    <span class="price">R 50.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="4 Cousins Sweet Red" />
+                        <input type="hidden" name="itemPrice" value="50.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Lagosta</h3>
+                    <span class="price">R 50.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Lagosta" />
+                        <input type="hidden" name="itemPrice" value="50.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Nederburg Merlot</h3>
+                    <span class="price">R 50.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Nederburg Merlot" />
+                        <input type="hidden" name="itemPrice" value="50.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Spier Sauvignon Blanc</h3>
+                    <span class="price">R 50.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Spier Sauvignon Blanc" />
+                        <input type="hidden" name="itemPrice" value="50.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>JC Le Roux</h3>
+                    <span class="price">R 150.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="JC Le Roux" />
+                        <input type="hidden" name="itemPrice" value="150.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Veuve Clicquot Rich</h3>
+                    <span class="price">R 1550.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Veuve Clicquot Rich" />
+                        <input type="hidden" name="itemPrice" value="1550.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Moët & Chandon Brut</h3>
+                    <span class="price">R 980.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Moët & Chandon Brut" />
+                        <input type="hidden" name="itemPrice" value="980.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Krone Rosé</h3>
+                    <span class="price">R 250.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Krone Rosé" />
+                        <input type="hidden" name="itemPrice" value="250.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SANGRIA ==================== -->
+        <section class="menu-section">
+            <h2>Sangria (500ml Jug)</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Red / White Sangria</h3>
+                    <span class="price">R 100.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Red / White Sangria" />
+                        <input type="hidden" name="itemPrice" value="100.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PORTUGUESE DRINKS / CORDIALS ==================== -->
+        <section class="menu-section">
+            <h2>Portuguese Drinks & Cordials</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Brita Granadilla</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Brita Granadilla" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Super Bock</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Super Bock" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Rose Lime</h3>
+                    <span class="price">R 5.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Rose Lime" />
+                        <input type="hidden" name="itemPrice" value="5.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Rose Passion Fruit</h3>
+                    <span class="price">R 5.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Rose Passion Fruit" />
+                        <input type="hidden" name="itemPrice" value="5.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Rose Cola Tonic</h3>
+                    <span class="price">R 5.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Rose Cola Tonic" />
+                        <input type="hidden" name="itemPrice" value="5.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SPIRITS ==================== -->
+        <section class="menu-section">
+            <h2>Spirits</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Smirnoff 1818 Vodka</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Smirnoff 1818 Vodka" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>SRYY Cherry Vodka</h3>
+                    <span class="price">R 20.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="SRYY Cherry Vodka" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Southern Comfort</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Southern Comfort" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Malibu</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Malibu" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Gordon's Gin</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Gordon's Gin" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Tanqueray</h3>
+                    <span class="price">R 20.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Tanqueray" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Stretton's</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Stretton's" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== BRANDY ==================== -->
+        <section class="menu-section">
+            <h2>Brandy</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Buffelsfontein</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Buffelsfontein" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Richelieu</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Richelieu" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Klipdrift Red</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Klipdrift Red" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Klipdrift Premium</h3>
+                    <span class="price">R 20.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Klipdrift Premium" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>KWV 5 Year</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="KWV 5 Year" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>KWV 8 Year</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="KWV 8 Year" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>1920 Portuguese Brandy</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="1920 Portuguese Brandy" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== WHISKY ==================== -->
+        <section class="menu-section">
+            <h2>Whisky</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Jameson</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Jameson" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Jameson Reserve</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Jameson Reserve" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>J&B</h3>
+                    <span class="price">R 20.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="J&B" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Bells</h3>
+                    <span class="price">R 20.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Bells" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Johnny Walker Red</h3>
+                    <span class="price">R 20.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Johnny Walker Red" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Johnny Walker Black</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Johnny Walker Black" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Jack Daniels</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Jack Daniels" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Glenfiddich 12 Year</h3>
+                    <span class="price">R 40.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Glenfiddich 12 Year" />
+                        <input type="hidden" name="itemPrice" value="40.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Glenlivet</h3>
+                    <span class="price">R 40.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Glenlivet" />
+                        <input type="hidden" name="itemPrice" value="40.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Chivas Regal 12 Year</h3>
+                    <span class="price">R 40.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Chivas Regal 12 Year" />
+                        <input type="hidden" name="itemPrice" value="40.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Chivas Regal 15 Year</h3>
+                    <span class="price">R 40.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Chivas Regal 15 Year" />
+                        <input type="hidden" name="itemPrice" value="40.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== RUM ==================== -->
+        <section class="menu-section">
+            <h2>Rum</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Tipo Tinto</h3>
+                    <span class="price">R 20.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Tipo Tinto" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Red Heart</h3>
+                    <span class="price">R 20.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Red Heart" />
+                        <input type="hidden" name="itemPrice" value="20.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Captain Morgan Jamaican</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Captain Morgan Jamaican" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Captain Morgan Spice Gold</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Captain Morgan Spice Gold" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== COGNAC ==================== -->
+        <section class="menu-section">
+            <h2>Cognac</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Hennessy VS</h3>
+                    <span class="price">R 40.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Hennessy VS" />
+                        <input type="hidden" name="itemPrice" value="40.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Hennessy VSOP</h3>
+                    <span class="price">R 60.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Hennessy VSOP" />
+                        <input type="hidden" name="itemPrice" value="60.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Remy Martin VSOP</h3>
+                    <span class="price">R 60.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Remy Martin VSOP" />
+                        <input type="hidden" name="itemPrice" value="60.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Hine VSOP</h3>
+                    <span class="price">R 55.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Hine VSOP" />
+                        <input type="hidden" name="itemPrice" value="55.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Courvoisier VS</h3>
+                    <span class="price">R 35.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Courvoisier VS" />
+                        <input type="hidden" name="itemPrice" value="35.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>CJB</h3>
+                    <span class="price">R 70.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="CJB" />
+                        <input type="hidden" name="itemPrice" value="70.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== LIQUOR ==================== -->
+        <section class="menu-section">
+            <h2>Liquor</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Amarula</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Amarula" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Kahlua</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Kahlua" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Cape Velvet</h3>
+                    <span class="price">R 15.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Cape Velvet" />
+                        <input type="hidden" name="itemPrice" value="15.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== BEER ==================== -->
+        <section class="menu-section">
+            <h2>Beer</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Amstel Lager (330ml)</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Amstel Lager (330ml)" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Black Label</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Black Label" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Castle Lite</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Castle Lite" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Castle Lager</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Castle Lager" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Castle Milk Stout</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Castle Milk Stout" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Flying Fish</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Flying Fish" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Hansa Pilsner</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Hansa Pilsner" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Heineken Lager</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Heineken Lager" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Heineken 0%</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Heineken 0%" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Stella Artois</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Stella Artois" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Windhoek Lager (440ml)</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Windhoek Lager (440ml)" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Windhoek Draught</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Windhoek Draught" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Beer Shandy</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Beer Shandy" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CIDER ==================== -->
+        <section class="menu-section">
+            <h2>Cider</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Corona Extra</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Corona Extra" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Brutal Fruit Ruby Apple</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Brutal Fruit Ruby Apple" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Savanna Dry</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Savanna Dry" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Savanna Lite</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Savanna Lite" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Red Square Energizer</h3>
+                    <span class="price">R 40.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Red Square Energizer" />
+                        <input type="hidden" name="itemPrice" value="40.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Red Square Red Ice</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Red Square Red Ice" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Red Square Blue Ice</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Red Square Blue Ice" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== BEER ON TAP ==================== -->
+        <section class="menu-section">
+            <h2>Beer on Tap</h2>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h3>Black Label Draught (300ml)</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Black Label Draught (300ml)" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Black Label Draught (500ml)</h3>
+                    <span class="price">R 35.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Black Label Draught (500ml)" />
+                        <input type="hidden" name="itemPrice" value="35.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Castle Lite Draught (300ml)</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Castle Lite Draught (300ml)" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Castle Lite Draught (500ml)</h3>
+                    <span class="price">R 35.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Castle Lite Draught (500ml)" />
+                        <input type="hidden" name="itemPrice" value="35.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Castle Lager Draught (300ml)</h3>
+                    <span class="price">R 25.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Castle Lager Draught (300ml)" />
+                        <input type="hidden" name="itemPrice" value="25.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Castle Lager Draught (500ml)</h3>
+                    <span class="price">R 35.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Castle Lager Draught (500ml)" />
+                        <input type="hidden" name="itemPrice" value="35.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Drunken Monkey (300ml)</h3>
+                    <span class="price">R 30.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Drunken Monkey (300ml)" />
+                        <input type="hidden" name="itemPrice" value="30.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+                <div class="menu-card">
+                    <h3>Drunken Monkey (500ml)</h3>
+                    <span class="price">R 40.00</span>
+                    <form th:action="@{/addToCart}" method="post">
+                        <input type="hidden" name="itemName" value="Drunken Monkey (500ml)" />
+                        <input type="hidden" name="itemPrice" value="40.00" />
+                        <button type="submit">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <script>
+    // Check if restaurant is open
+    function checkRestaurantStatus() {
+        const now = new Date();
+        const day = now.getDay();
+        const hour = now.getHours();
+        const minute = now.getMinutes();
+        
+        let isOpen = false;
+        let statusMessage = "";
+        
+        // Monday - Saturday (11:00 - 21:00)
+        if (day >= 1 && day <= 6) {
+            if ((hour > 11 || (hour === 11 && minute >= 0)) && (hour < 21 || (hour === 21 && minute === 0))) {
+                isOpen = true;
+                statusMessage = "✅ Restaurant is OPEN! You can place your order.";
+            } else {
+                statusMessage = "❌ Restaurant is CLOSED. We open at 11:00.";
+            }
+        }
+        // Sunday (11:00 - 19:00)
+        else if (day === 0) {
+            if ((hour > 11 || (hour === 11 && minute >= 0)) && (hour < 19 || (hour === 19 && minute === 0))) {
+                isOpen = true;
+                statusMessage = "✅ Restaurant is OPEN! You can place your order.";
+            } else {
+                statusMessage = "❌ Restaurant is CLOSED. We open at 11:00.";
+            }
+        }
+        
+        return { isOpen, statusMessage };
+    }
+
+    // Apply status when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const status = checkRestaurantStatus();
+        
+        // For checkout page
+        const checkoutContent = document.querySelector('.checkout-content');
+        const orderBtn = document.getElementById('place-order-btn');
+        
+        if (checkoutContent) {
+            // Create status display at the top of checkout
+            const statusDiv = document.createElement('div');
+            statusDiv.style.textAlign = 'center';
+            statusDiv.style.padding = '15px';
+            statusDiv.style.marginBottom = '20px';
+            statusDiv.style.borderRadius = '10px';
+            statusDiv.style.fontWeight = 'bold';
+            statusDiv.style.fontSize = '18px';
+            statusDiv.style.border = status.isOpen ? '2px solid #00cc66' : '2px solid #cc0000';
+            statusDiv.style.backgroundColor = status.isOpen ? 'rgba(0, 204, 102, 0.2)' : 'rgba(204, 0, 0, 0.2)';
+            statusDiv.textContent = status.statusMessage;
+            
+            checkoutContent.insertBefore(statusDiv, checkoutContent.firstChild);
+        }
+        
+        // Disable order button if closed
+        if (orderBtn) {
+            if (status.isOpen) {
+                orderBtn.disabled = false;
+                orderBtn.style.opacity = '1';
+                orderBtn.style.cursor = 'pointer';
+            } else {
+                orderBtn.disabled = true;
+                orderBtn.style.opacity = '0.5';
+                orderBtn.style.cursor = 'not-allowed';
+                orderBtn.textContent = '❌ Restaurant Closed - Please Come Back Later';
+            }
+        }
+    });
+    </script>
+</body>
+</html>

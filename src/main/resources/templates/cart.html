@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Cart - Franco's Portuguese Restaurant</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #d90000 50%, #00994d 50%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            min-height: 95vh;
+        }
+
+        header {
+            background: #000;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid #ff6600;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #ff6600;
+            margin: 0;
+            font-size: 40px;
+        }
+
+        .cart-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff6600;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            z-index: 100;
+            border: 2px solid white;
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.6);
+        }
+
+        .cart-indicator a {
+            color: white;
+            text-decoration: none;
+        }
+
+        table {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: #222;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #444;
+            text-align: center;
+        }
+
+        th {
+            background: #333;
+            font-size: 18px;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px;
+            font-size: 20px;
+            color: #888;
+        }
+
+        .remove-btn {
+            background: #cc0000;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background: #990000;
+        }
+
+        .total {
+            max-width: 900px;
+            margin: 30px auto 0;
+            text-align: right;
+            font-size: 28px;
+            color: #ff6600;
+            padding: 20px;
+            background: #222;
+            border-radius: 15px;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 250px;
+            margin: 20px auto 40px;
+            text-align: center;
+            background: #ff6600;
+            color: white;
+            padding: 15px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background: #e65c00;
+            transform: scale(1.05);
+        }
+
+        .continue-shopping {
+            display: block;
+            text-align: center;
+            color: #ff6600;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .continue-shopping:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cart-indicator">
+        <a href="/cart">🛒 Cart (<span th:text="${cartCount}">0</span>)</a>
+    </div>
+
+    <div class="content-wrapper">
+        <header>
+            <h1>Your Cart</h1>
+        </header>
+
+        <a href="/menu" class="continue-shopping">← Continue Shopping</a>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item, stat : ${cartItems}">
+                    <td th:text="${item.name}">Peri Peri Chicken</td>
+                    <td th:text="'R' + ${item.price}">R199</td>
+                    <td>
+                        <form th:action="@{/removeFromCart}" method="post" style="display:inline;">
+                            <input type="hidden" name="index" th:value="${stat.index}" />
+                            <button type="submit" class="remove-btn">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${cartItems == null || cartItems.isEmpty()}">
+                    <td colspan="3" class="empty-cart">Your cart is empty.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="total">
+            Total: R<span th:text="${totalPrice}">0.00</span>
+        </div>
+
+        <a href="/checkout" class="checkout-btn" th:if="${cartItems != null && !cartItems.isEmpty()}">
+            Proceed To Checkout
+        </a>
+
+        <a href="/clearCart" class="continue-shopping" style="color:#cc0000;" th:if="${cartItems != null && !cartItems.isEmpty()}">
+            Clear Cart
+        </a>
+    </div>
+
+</body>
+</html> 

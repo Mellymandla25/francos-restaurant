@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Checkout - Franco's Portuguese Restaurant</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #d90000 50%, #00994d 50%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            min-height: 95vh;
+        }
+
+        header {
+            background: #000;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid #ff6600;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #ff6600;
+            margin: 0;
+            font-size: 40px;
+        }
+
+        .cart-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff6600;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            z-index: 100;
+            border: 2px solid white;
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.6);
+        }
+
+        .cart-indicator a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .checkout-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .order-summary {
+            flex: 1;
+            min-width: 300px;
+            background: #222;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .order-summary h2 {
+            color: #ff6600;
+            margin-top: 0;
+        }
+
+        .order-summary table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .order-summary td {
+            padding: 10px 0;
+            border-bottom: 1px solid #444;
+        }
+
+        .order-summary .total-row {
+            font-size: 24px;
+            color: #ff6600;
+            font-weight: bold;
+            border-top: 2px solid #ff6600;
+        }
+
+        .checkout-form {
+            flex: 1;
+            min-width: 300px;
+            background: #222;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .checkout-form h2 {
+            color: #ff6600;
+            margin-top: 0;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #333;
+            color: white;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #888;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #ff6600;
+            border: none;
+            color: white;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #e65c00;
+            transform: scale(1.02);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #ff6600;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .empty-checkout {
+            text-align: center;
+            padding: 40px;
+            font-size: 20px;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cart-indicator">
+        <a href="/cart">🛒 Cart (<span th:text="${cartCount}">0</span>)</a>
+    </div>
+
+    <div class="content-wrapper">
+        <header>
+            <h1>Checkout</h1>
+        </header>
+
+        <div class="empty-checkout" th:if="${cartItems == null || cartItems.isEmpty()}">
+            <p>Your cart is empty. Please add items to your cart before checking out.</p>
+            <a href="/menu" style="color:#ff6600; text-decoration:none;">← Go to Menu</a>
+        </div>
+
+        <div class="checkout-container" th:if="${cartItems != null && !cartItems.isEmpty()}">
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Item</th>
+                            <th style="text-align:right;">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${cartItems}">
+                            <td th:text="${item.name}">Item Name</td>
+                            <td style="text-align:right;" th:text="'R' + ${item.price}">R100</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td>Total</td>
+                            <td style="text-align:right;" th:text="'R' + ${totalPrice}">R500</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="checkout-form">
+                <h2>Customer Details</h2>
+                <form th:action="@{/placeOrder}" method="post">
+                    <input type="text" name="fullName" placeholder="Full Name" required>
+                    <input type="text" name="phoneNumber" placeholder="Phone Number" required>
+                    <input type="email" name="email" placeholder="Email Address">
+                    <textarea name="notes" placeholder="Additional Notes (e.g. special requests)" rows="2"></textarea>
+                    <!-- Collection Time Picker -->
+                    <div style="margin: 15px 0; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 10px;">
+                        <label style="color: #ff6600; font-weight: bold; display: block; margin-bottom: 5px;">🕐 Select Collection Time:</label>
+                        <select name="collectionTime" id="collectionTime" style="width: 100%; padding: 12px; border-radius: 8px; border: none; font-size: 16px; background: #333; color: white;" required>
+                            <option value="">-- Select a time --</option>
+                        </select>
+                        <div id="timeWarning" style="color: #ff4444; margin-top: 5px; display: none;"></div>
+                    </div>
+                    <button type="submit">
+                        Place Order
+                    </button>
+                </form>
+                <a href="/cart" class="back-link">← Back to Cart</a>
+            </div>
+        </div>
+    </div>
+    <script>
+    // Check if restaurant is open
+    function checkRestaurantStatus() {
+        const now = new Date();
+        const day = now.getDay();
+        const hour = now.getHours();
+        const minute = now.getMinutes();
+        
+        let isOpen = false;
+        let statusMessage = "";
+        
+        // Monday - Saturday (11:00 - 21:00)
+        if (day >= 1 && day <= 6) {
+            if ((hour > 11 || (hour === 11 && minute >= 0)) && (hour < 21 || (hour === 21 && minute === 0))) {
+                isOpen = true;
+                statusMessage = "✅ Restaurant is OPEN! You can place your order.";
+            } else {
+                statusMessage = "❌ Restaurant is CLOSED. We open at 11:00.";
+            }
+        }
+        // Sunday (11:00 - 19:00)
+        else if (day === 0) {
+            if ((hour > 11 || (hour === 11 && minute >= 0)) && (hour < 19 || (hour === 19 && minute === 0))) {
+                isOpen = true;
+                statusMessage = "✅ Restaurant is OPEN! You can place your order.";
+            } else {
+                statusMessage = "❌ Restaurant is CLOSED. We open at 11:00.";
+            }
+        }
+        
+        return { isOpen, statusMessage };
+    }
+
+    // Apply status when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const status = checkRestaurantStatus();
+        
+        // For checkout page
+        const checkoutContent = document.querySelector('.checkout-content');
+        const orderBtn = document.getElementById('place-order-btn');
+        
+        if (checkoutContent) {
+            // Create status display at the top of checkout
+            const statusDiv = document.createElement('div');
+            statusDiv.style.textAlign = 'center';
+            statusDiv.style.padding = '15px';
+            statusDiv.style.marginBottom = '20px';
+            statusDiv.style.borderRadius = '10px';
+            statusDiv.style.fontWeight = 'bold';
+            statusDiv.style.fontSize = '18px';
+            statusDiv.style.border = status.isOpen ? '2px solid #00cc66' : '2px solid #cc0000';
+            statusDiv.style.backgroundColor = status.isOpen ? 'rgba(0, 204, 102, 0.2)' : 'rgba(204, 0, 0, 0.2)';
+            statusDiv.textContent = status.statusMessage;
+            
+            checkoutContent.insertBefore(statusDiv, checkoutContent.firstChild);
+        }
+        
+        // Disable order button if closed
+        if (orderBtn) {
+            if (status.isOpen) {
+                orderBtn.disabled = false;
+                orderBtn.style.opacity = '1';
+                orderBtn.style.cursor = 'pointer';
+            } else {
+                orderBtn.disabled = true;
+                orderBtn.style.opacity = '0.5';
+                orderBtn.style.cursor = 'not-allowed';
+                orderBtn.textContent = '❌ Restaurant Closed - Please Come Back Later';
+            }
+        }
+    });
+    </script>
+    <script>
+    // ====== COLLECTION TIME MANAGER ======
+    function populateTimeSlots() {
+        const select = document.getElementById('collectionTime');
+        const warning = document.getElementById('timeWarning');
+        const now = new Date();
+        const day = now.getDay();
+        const hour = now.getHours();
+        const minute = now.getMinutes();
+        
+        // Operating hours
+        let openHour = 11;
+        let closeHour = 21;
+        let closeMinute = 0;
+        
+        // Sunday: 11:00 - 19:00
+        if (day === 0) {
+            closeHour = 19;
+        }
+        
+        // If currently closed, block all orders
+        let isOpen = false;
+        if (day >= 1 && day <= 6) {
+            if ((hour > openHour || (hour === openHour && minute >= 0)) && 
+                (hour < closeHour || (hour === closeHour && minute === 0))) {
+                isOpen = true;
+            }
+        } else if (day === 0) {
+            if ((hour > openHour || (hour === openHour && minute >= 0)) && 
+                (hour < closeHour || (hour === closeHour && minute === 0))) {
+                isOpen = true;
+            }
+        }
+        
+        if (!isOpen) {
+            warning.textContent = "❌ Restaurant is closed. Please order during operating hours.";
+            warning.style.display = 'block';
+            select.disabled = true;
+            return;
+        }
+        
+        // Generate time slots (every 30 minutes)
+        let currentHour = hour;
+        let currentMinute = minute;
+        
+        // Round up to next 30 minutes
+        if (currentMinute > 30) {
+            currentHour += 1;
+            currentMinute = 0;
+        } else if (currentMinute > 0) {
+            currentMinute = 30;
+        }
+        
+        // Add available slots
+        let count = 0;
+        while (currentHour < closeHour || (currentHour === closeHour && currentMinute === 0)) {
+            if (count >= 10) break; // Limit to 10 slots
+            
+            const timeString = 
+                String(currentHour).padStart(2, '0') + ':' + 
+                String(currentMinute).padStart(2, '0');
+            
+            const option = document.createElement('option');
+            option.value = timeString;
+            option.textContent = timeString;
+            select.appendChild(option);
+            
+            // Move to next slot
+            if (currentMinute === 0) {
+                currentMinute = 30;
+            } else {
+                currentMinute = 0;
+                currentHour += 1;
+            }
+            count++;
+        }
+        
+        select.disabled = false;
+        warning.style.display = 'none';
+    }
+
+    // Run on page load
+    document.addEventListener('DOMContentLoaded', populateTimeSlots);
+    </script>
+</body>
+</html>

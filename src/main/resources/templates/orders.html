@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Orders - Franco's Portuguese Restaurant</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #d90000 50%, #00994d 50%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .content-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            min-height: 95vh;
+        }
+
+        header {
+            background: #000;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid #ff6600;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #ff6600;
+            margin: 0;
+            font-size: 40px;
+        }
+
+        .nav-links {
+            margin-top: 15px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #ff6600;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 5px 15px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #333;
+            text-decoration: underline;
+        }
+
+        .cart-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff6600;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            z-index: 100;
+            border: 2px solid white;
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.6);
+        }
+
+        .cart-indicator a {
+            color: white;
+            text-decoration: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #222;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #444;
+            text-align: left;
+        }
+
+        th {
+            background: #333;
+            font-size: 16px;
+        }
+
+        tr:hover {
+            background: #2a2a2a;
+        }
+
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: #ffcc00;
+            color: #333;
+        }
+
+        .status-collected {
+            background: #00cc66;
+            color: white;
+        }
+
+        .status-cancelled {
+            background: #cc0000;
+            color: white;
+        }
+
+        .btn-view {
+            background: #ff6600;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn-view:hover {
+            background: #e65c00;
+        }
+
+        .empty-orders {
+            text-align: center;
+            padding: 40px;
+            font-size: 20px;
+            color: #888;
+        }
+
+        .order-count {
+            color: #ff6600;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .status-form {
+            display: inline-block;
+        }
+
+        .status-form select {
+            padding: 4px;
+            border-radius: 4px;
+            background: #333;
+            color: white;
+            border: 1px solid #444;
+            font-size: 12px;
+        }
+
+        .status-form button {
+            padding: 4px 10px;
+            background: #ff6600;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .status-form button:hover {
+            background: #e65c00;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cart-indicator">
+        <a href="/cart">🛒 Cart (<span th:text="${cartCount}">0</span>)</a>
+    </div>
+
+    <div class="content-wrapper">
+        <header>
+            <h1>Order Management</h1>
+            <p style="color:#ccc;">"Good food takes time"</p>
+            
+            <div class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/menu">📋 Menu</a>
+                <a href="/specials">🔥 Specials</a>
+                <a href="/cart">🛒 Cart</a>
+                <a href="/orders">📦 Orders</a>
+            </div>
+        </header>
+
+        <div style="margin-bottom: 20px;">
+            <span style="font-size: 18px;">Total Orders: <span class="order-count" th:text="${orders.size()}">0</span></span>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Order Number</th>
+                    <th>Customer Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Total</th>
+                    <th>Order Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${orders}">
+                    <td><strong th:text="${order.orderNumber}">FR-123456</strong></td>
+                    <td th:text="${order.fullName}">John Doe</td>
+                    <td th:text="${order.phoneNumber}">+27 81 234 5678</td>
+                    <td th:text="${order.email != null ? order.email : 'N/A'}">email@example.com</td>
+                    <td style="color: #ff6600; font-weight: bold;" th:text="'R' + ${order.totalPrice}">R100</td>
+                    <td th:text="${order.formattedOrderTime}">2026-05-29 14:30</td>
+                    <td>
+                        <span class="status-badge" 
+                              th:classappend="${order.status == 'PENDING' ? 'status-pending' : 
+                                                (order.status == 'COLLECTED' ? 'status-collected' : 
+                                                'status-cancelled')}"
+                              th:text="${order.status}">PENDING</span>
+                    </td>
+                    <td>
+                        <form th:action="@{/update-order-status}" method="post" class="status-form">
+                            <input type="hidden" name="orderNumber" th:value="${order.orderNumber}" />
+                            <select name="status">
+                                <option value="PENDING" th:selected="${order.status == 'PENDING'}">Pending</option>
+                                <option value="COLLECTED" th:selected="${order.status == 'COLLECTED'}">Collected</option>
+                                <option value="CANCELLED" th:selected="${order.status == 'CANCELLED'}">Cancelled</option>
+                            </select>
+                            <button type="submit">Update</button>
+                        </form>
+                        <div style="margin-top: 5px;">
+                            <a href="/export-orders" class="btn" style="background: #0066cc; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">📥 Download Excel</a>
+                            <a th:href="@{/order-items(orderNumber=${order.orderNumber})}" class="btn-view">View Items</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${orders.isEmpty()}">
+                    <td colspan="8" class="empty-orders">No orders yet. Waiting for customers to place orders.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
