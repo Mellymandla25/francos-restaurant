@@ -1,12 +1,7 @@
-# Stage 1: Build the application
-FROM eclipse-temurin:21-jre AS build
-WORKDIR /app
-COPY . .
-RUN chmod +x ./mvnw
-RUN ./mvnw clean package -DskipTests
 
-# Stage 2: Run the application
-FROM eclipse-temurin:21-jre
-WORKDIR /app
-COPY --from=build /app/target/restaurant-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+# Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+# Click nbfs://nbhost/SystemFileSystem/Templates/Other/Dockerfile to edit this template
+
+FROM alpine:latest
+
+CMD ["/bin/sh"]
