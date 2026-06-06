@@ -273,6 +273,14 @@ public class HomeController {
         return "dashboard";
     }
     
+    @GetMapping("/my-order-details")
+    public String myOrders(Model model) {
+        // For now, show all orders (you can filter by customer later)
+        model.addAttribute("orders", allOrders);
+        model.addAttribute("cartCount", cartItems.size());
+        return "my-orders";
+    }
+    
     @GetMapping("/export-orders")
     public void exportOrders(HttpServletResponse response) {
         try {
