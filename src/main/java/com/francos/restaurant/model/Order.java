@@ -100,4 +100,14 @@ public class Order {
             java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return orderTime.format(formatter);
     }
+    
+    private String collectionTime;
+
+    public String getCollectionTime() {
+        return collectionTime;
+    }
+
+    public void setCollectionTime(String collectionTime) {
+        this.collectionTime = collectionTime;
+    }
 }
