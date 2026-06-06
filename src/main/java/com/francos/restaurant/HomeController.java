@@ -21,9 +21,12 @@ import java.time.LocalDateTime;
 
 import com.francos.restaurant.model.Order;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -290,6 +293,14 @@ public class HomeController {
     
         // ← CHANGE THIS FROM "my-orders" TO "my-order-details"
         return "my-order-details";
+    }
+    
+    @GetMapping("/orders/count")
+    @ResponseBody
+    public Map<String, Integer> getOrderCount() {
+        Map<String, Integer> response = new HashMap<>();
+        response.put("count", allOrders.size());
+        return response;
     }
     
     @GetMapping("/export-orders")
