@@ -55,6 +55,7 @@ public class Order {
         this.email = email;
         this.notes = notes;
         this.items = items;
+        this.collectionTime = collectionTime;
         this.totalPrice = totalPrice;
         this.orderTime = LocalDateTime.now();
         this.status = "PENDING";
