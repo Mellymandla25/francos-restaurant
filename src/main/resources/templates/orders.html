@@ -198,11 +198,12 @@
             .then(response => response.json())
             .then(data => {
                 if (data.count > lastOrderCount && lastOrderCount !== 0) {
-                    // New order detected!
+                    // Play sound
+                    const audio = new Audio('/sounds/notification.mp3');
+                    audio.play();
+                    
+                    // Show alert
                     alert('🔔 New order received! Check the orders list.');
-                    // Optional: Play a sound
-                    // const audio = new Audio('/sounds/notification.mp3');
-                    // audio.play();
                 }
                 lastOrderCount = data.count;
             })
