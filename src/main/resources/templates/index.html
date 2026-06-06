@@ -222,7 +222,7 @@
 
             <!-- Buttons (Exactly Same Size) -->
             <div class="button-row">
-                <a href="/orders" class="btn btn-orders">📦 View Orders</a>
+                <a th:href="@{/view-order(orderNumber=${orderNumber})}" class="btn btn-primary" style="background: #00994d;">📦 View My Order</a>
                 <a href="/menu" class="btn btn-menu">View Menu</a>
             </div>
         </div>
