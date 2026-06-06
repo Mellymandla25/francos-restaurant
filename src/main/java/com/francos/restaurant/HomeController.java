@@ -142,6 +142,26 @@ public class HomeController {
         } catch (Exception e) {
             System.out.println("❌ Staff alert failed: " + e.getMessage());
         }
+        
+        // Send confirmation email to customer
+        if (email != null && !email.isEmpty()) {
+            try {
+               SimpleMailMessage customerEmail = new SimpleMailMessage();
+               customerEmail.setTo(email);
+               customerEmail.setSubject("Order Confirmation - Franco's Portuguese Restaurant");
+               customerEmail.setText(
+                "Dear " + fullName + ",\n\n" +
+                "Your order (" + orderNumber + ") has been placed successfully.\n" +
+                "Collection time: " + collectionTime + "\n" +
+                "Total: R" + totalPrice + "\n\n" +
+                "Thank you for choosing Franco's Portuguese Restaurant!"
+            );
+            mailSender.send(customerEmail);
+            System.out.println("✅ Customer confirmation email sent to: " + email);
+            } catch (Exception e) {
+                System.out.println("❌ Customer email failed: " + e.getMessage());
+            }
+        }
         // Clear cart
         cartItems.clear();
         totalPrice = 0.0;
