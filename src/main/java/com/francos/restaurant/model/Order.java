@@ -46,7 +46,7 @@ public class Order {
         public double getPrice() { return price; }
     }
 
-    public Order() {}
+    public Order(String orderNumber1, String fullName1, String phoneNumber1, String collectionTime, String email1, String notes1, List<CartItem> orderItems, double totalPrice1) {}
     public Order(String orderNumber, String fullName, String phoneNumber, String email, 
                  String notes, List<CartItem> items, double totalPrice) {
         this.orderNumber = orderNumber;
