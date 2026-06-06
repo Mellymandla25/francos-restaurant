@@ -274,9 +274,19 @@ public class HomeController {
     }
     
     @GetMapping("/my-order-details")
-    public String myOrders(Model model) {
-        // For now, show all orders (you can filter by customer later)
-        model.addAttribute("orders", allOrders);
+    public String myOrders(@RequestParam(required = false) String phone, Model model) {
+        List<Order> customerOrders = new ArrayList<>();
+    
+        // If phone number is provided, filter orders by that phone number
+        if (phone != null && !phone.isEmpty()) {
+            for (Order order : allOrders) {
+                if (order.getPhoneNumber().equals(phone)) {
+                    customerOrders.add(order);
+                }
+            }
+        }
+    
+        model.addAttribute("orders", customerOrders);
         model.addAttribute("cartCount", cartItems.size());
         return "my-orders";
     }
