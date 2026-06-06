@@ -141,13 +141,14 @@ public class HomeController {
             System.out.println("✅ Staff alert sent");
         } catch (Exception e) {
             System.out.println("❌ Staff alert failed: " + e.getMessage());
-}
+        }
         // Clear cart
         cartItems.clear();
         totalPrice = 0.0;
         
         model.addAttribute("orderNumber", orderNumber);
         model.addAttribute("cartCount", 0);
+        model.addAttribute("phoneNumber", phoneNumber);
         
         return "order-confirmation";
     }
