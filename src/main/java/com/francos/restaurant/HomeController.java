@@ -120,7 +120,7 @@ public class HomeController {
         }
         
         // Create and save the order
-        Order newOrder = new Order(orderNumber, fullName, phoneNumber, email, notes, orderItems, totalPrice);
+        Order newOrder = new Order(orderNumber, fullName, phoneNumber, collectionTime, email, notes, orderItems, totalPrice);
         allOrders.add(newOrder);
         // ====== SEND INSTANT STAFF ALERT ======
         try {
