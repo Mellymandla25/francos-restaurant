@@ -169,7 +169,7 @@
                 <a href="/menu">📋 Menu</a>
                 <a href="/specials">🔥 Specials</a>
                 <a href="/cart">🛒 Cart</a>
-                <a href="/orders">📦 Orders</a>
+                <a th:href="@{/view-order(orderNumber=${orderNumber})}" class="btn btn-primary" style="background: #00994d;">📦 View My Order</a>
             </div>
         </header>
 
