@@ -209,10 +209,7 @@
             </div>
 
             <div class="info-grid">
-                <div class="info-item">
-                    <label>Collection Time</label>
-                    <div class="value" th:text="${order.collectionTime}">18:00</div>
-                </div>
+                
                 <div class="info-item">
                     <label>Customer Name</label>
                     <div class="value" th:text="${order.fullName}">John Doe</div>
@@ -232,6 +229,10 @@
                 <div class="info-item" th:if="${order.notes != null && !order.notes.isEmpty()}" style="grid-column: span 2;">
                     <label>Notes</label>
                     <div class="value" th:text="${order.notes}">No special requests</div>
+                </div>
+                <div class="info-item">
+                    <label>Collection Time</label>
+                    <div class="value" th:text="${order.collectionTime}">18:00</div>
                 </div>
             </div>
 
