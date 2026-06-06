@@ -125,7 +125,7 @@ public class HomeController {
         // ====== SEND INSTANT STAFF ALERT ======
         try {
             SimpleMailMessage staffAlert = new SimpleMailMessage();
-            staffAlert.setTo("restaurant@francos.co.za"); // ← Change to restaurant email
+            staffAlert.setTo("mellymandla25@gmail.com"); // ← Change to restaurant email
             staffAlert.setSubject("🚨 NEW ORDER: " + orderNumber);
             staffAlert.setText(
                 "New order received!\n\n" +
