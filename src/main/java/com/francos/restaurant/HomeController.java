@@ -245,7 +245,7 @@ public class HomeController {
         return "redirect:/";
     }
 
-    @GetMapping("/staff-sales")
+    @GetMapping("/dashboard")
     public String dashboard(@RequestParam(required = false) String pass, Model model) {
         
         if (pass == null || !pass.equals("francos123")) {
