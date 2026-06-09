@@ -246,11 +246,7 @@ public class HomeController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard(@RequestParam(required = false) String pass, Model model) {
-        
-        if (pass == null || !pass.equals("francos123")) {
-            return "redirect:/";
-        }
+    public String dashboard(Model model) {
         
         LocalDateTime now = LocalDateTime.now();
     
