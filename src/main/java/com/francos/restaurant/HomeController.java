@@ -221,7 +221,7 @@ public class HomeController {
         return "redirect:/";
     }
 
-    @GetMapping("/staff-sales")
+    @GetMapping("/dashboard")
     public String dashboard(Model model) {
        
         LocalDateTime now = LocalDateTime.now();
