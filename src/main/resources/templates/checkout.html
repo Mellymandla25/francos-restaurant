@@ -381,5 +381,58 @@
     // Run on page load
     document.addEventListener('DOMContentLoaded', populateTimeSlots);
     </script>
+    <script>
+    function checkClosingTime() {
+        const now = new Date();
+        const day = now.getDay();
+        const hour = now.getHours();
+        const minute = now.getMinutes();
+        
+        let closeHour = 21; // Default close time for Mon-Sat
+        let closeMinute = 0;
+        let lastOrderHour = 20; // Last order allowed 1 hour before closing
+        let lastOrderMinute = 0;
+        
+        // Sunday: 19:00 closing
+        if (day === 0) {
+            closeHour = 19;
+            lastOrderHour = 18;
+        }
+        
+        // Check if it's past the last order time
+        let isLastOrderTime = false;
+        if ((hour > lastOrderHour || (hour === lastOrderHour && minute >= lastOrderMinute)) && 
+            (hour < closeHour || (hour === closeHour && minute === 0))) {
+            isLastOrderTime = true;
+        }
+        
+        return isLastOrderTime;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const orderBtn = document.getElementById('place-order-btn');
+        const isLastOrder = checkClosingTime();
+        
+        if (isLastOrder) {
+            if (orderBtn) {
+                orderBtn.disabled = true;
+                orderBtn.style.opacity = '0.5';
+                orderBtn.style.cursor = 'not-allowed';
+                orderBtn.textContent = '⏰ Last orders taken 1 hour before closing';
+            }
+            // Show a warning message
+            const statusDiv = document.createElement('div');
+            statusDiv.style.textAlign = 'center';
+            statusDiv.style.padding = '15px';
+            statusDiv.style.marginBottom = '20px';
+            statusDiv.style.borderRadius = '10px';
+            statusDiv.style.border = '2px solid #ff6600';
+            statusDiv.style.backgroundColor = 'rgba(255, 102, 0, 0.2)';
+            statusDiv.style.color = '#ff6600';
+            statusDiv.innerHTML = '<strong>⚠️ We are no longer taking orders for today. Please come back tomorrow.</strong>';
+            document.querySelector('.checkout-container').insertBefore(statusDiv, document.querySelector('.checkout-container').firstChild);
+        }
+    });
+</script>
 </body>
 </html>
