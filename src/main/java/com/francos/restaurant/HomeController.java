@@ -21,12 +21,9 @@ import java.time.LocalDateTime;
 
 import com.francos.restaurant.model.Order;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -120,12 +117,12 @@ public class HomeController {
         }
         
         // Create and save the order
-        Order newOrder = new Order(orderNumber, fullName, phoneNumber, collectionTime, email, notes, orderItems, totalPrice);
+        Order newOrder = new Order(orderNumber, fullName, phoneNumber, email, notes, orderItems, totalPrice);
         allOrders.add(newOrder);
         // ====== SEND INSTANT STAFF ALERT ======
         try {
             SimpleMailMessage staffAlert = new SimpleMailMessage();
-            staffAlert.setTo("mellymandla25@gmail.com"); // ← Change to restaurant email
+            staffAlert.setTo("restaurant@francos.co.za"); // ← Change to restaurant email
             staffAlert.setSubject("🚨 NEW ORDER: " + orderNumber);
             staffAlert.setText(
                 "New order received!\n\n" +
@@ -141,34 +138,13 @@ public class HomeController {
             System.out.println("✅ Staff alert sent");
         } catch (Exception e) {
             System.out.println("❌ Staff alert failed: " + e.getMessage());
-        }
-        
-        // Send confirmation email to customer
-        if (email != null && !email.isEmpty()) {
-            try {
-               SimpleMailMessage customerEmail = new SimpleMailMessage();
-               customerEmail.setTo(email);
-               customerEmail.setSubject("Order Confirmation - Franco's Portuguese Restaurant");
-               customerEmail.setText(
-                "Dear " + fullName + ",\n\n" +
-                "Your order (" + orderNumber + ") has been placed successfully.\n" +
-                "Collection time: " + collectionTime + "\n" +
-                "Total: R" + totalPrice + "\n\n" +
-                "Thank you for choosing Franco's Portuguese Restaurant!"
-            );
-            mailSender.send(customerEmail);
-            System.out.println("✅ Customer confirmation email sent to: " + email);
-            } catch (Exception e) {
-                System.out.println("❌ Customer email failed: " + e.getMessage());
-            }
-        }
+}
         // Clear cart
         cartItems.clear();
         totalPrice = 0.0;
         
         model.addAttribute("orderNumber", orderNumber);
         model.addAttribute("cartCount", 0);
-        model.addAttribute("phoneNumber", phoneNumber);
         
         return "order-confirmation";
     }
@@ -247,7 +223,7 @@ public class HomeController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
-        
+       
         LocalDateTime now = LocalDateTime.now();
     
         // Daily (today from midnight)
@@ -291,33 +267,6 @@ public class HomeController {
         model.addAttribute("cartCount", cartItems.size());
     
         return "dashboard";
-    }
-    
-    @GetMapping("/my-orders")
-    public String myOrders(@RequestParam(required = false) String phone, Model model) {
-        List<Order> customerOrders = new ArrayList<>();
-    
-        if (phone != null && !phone.isEmpty()) {
-            for (Order order : allOrders) {
-                if (order.getPhoneNumber().equals(phone)) {
-                    customerOrders.add(order);
-                }
-            }
-        }
-    
-        model.addAttribute("orders", customerOrders);
-        model.addAttribute("cartCount", cartItems.size());
-    
-        // ← CHANGE THIS FROM "my-orders" TO "my-order-details"
-        return "my-order-details";
-    }
-    
-    @GetMapping("/orders/count")
-    @ResponseBody
-    public Map<String, Integer> getOrderCount() {
-        Map<String, Integer> response = new HashMap<>();
-        response.put("count", allOrders.size());
-        return response;
     }
     
     @GetMapping("/export-orders")
